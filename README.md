@@ -1,51 +1,118 @@
-DELIMITER //
+
 
 * Consulta 1
 ``` sql
+
+DROP PROCEDURE IF EXISTS Consulta1;
+DELIMITER //
+
 CREATE PROCEDURE Consulta1()
 BEGIN
-    SELECT apellido1, apellido2, nombre FROM persona WHERE tipo = 'alumno' ORDER BY apellido1, apellido2, nombre;
+    SELECT apellido1, apellido2, nombre FROM persona
+    WHERE tipo = 'alumno'
+    ORDER BY apellido1, apellido2, nombre;
 END //
+
+DELIMITER ;
+
+CALL Consulta1();
+
 ``` 
 * Consulta 2
 ``` sql
+
+DROP PROCEDURE IF EXISTS Consulta2;
+DELIMITER //
+
 CREATE PROCEDURE Consulta2()
 BEGIN
-    SELECT nombre, apellido1, apellido2 FROM persona WHERE tipo = 'alumno' AND telefono IS NULL;
+    SELECT nombre, apellido1, apellido2
+    FROM persona
+    WHERE tipo = 'alumno'
+    AND telefono IS NULL;
 END //
+
+DELIMITER ;
+
+CALL Consulta2(); 
 ``` 
 * Consulta 3
 ``` sql
-CREATE PROCEDURE Consulta3()
+DROP PROCEDURE IF EXISTS Consulta3;
+
+DELIMITER //
+
+CREATE PROCEDURE Consulta3(IN anyio YEAR)
 BEGIN
-    SELECT nombre, apellido1, apellido2 FROM persona WHERE tipo = 'alumno' AND YEAR(fecha_nacimiento) = 1999;
+    SELECT nombre, apellido1, apellido2
+    FROM persona
+    WHERE tipo = 'alumno'
+    AND YEAR(fecha_nacimiento) = anyio;
 END //
+
+DELIMITER ;
+
+CALL Consulta3(1999);
+
 ``` 
 * Consulta 4
 ``` sql
+DROP PROCEDURE IF ESXISTS Consulta4;
+
+DELIMITER //
+
 CREATE PROCEDURE Consulta4()
 BEGIN
-    SELECT nombre, apellido1, apellido2 FROM persona WHERE tipo = 'profesor' AND telefono IS NULL AND nif LIKE '%K';
+    SELECT nombre, apellido1, apellido2
+    FROM persona
+    WHERE tipo = 'profesor'
+    AND telefono IS NULL
+    AND nif LIKE '%K';
 END //
+
+DELIMITER ;
+
+CALL Consulta4();
 ``` 
 * Consulta 5
 ``` sql
-CREATE PROCEDURE Consulta5()
+
+DROP PROCEDURE IF EXISTS Consulta5;
+DELIMITER //
+
+CREATE PROCEDURE Consulta5(IN numero INT, IN grado INT, IN numCurso INT)
 BEGIN
-    SELECT nombre, id_grado, cuatrimestre FROM asignatura WHERE cuatrimestre = '1' AND id_grado = '7';
+    SELECT *
+    FROM asignatura
+    WHERE cuatrimestre = numero
+    AND id_grado = grado
+    AND curso = numCurso;
 END //
+
+DELIMITER ;
+
+CALL Consulta5(1, 7, 3);
+
 ``` 
 * Consulta 6
 ``` sql
-CREATE PROCEDURE Consulta6()
+DROP PROCEDURE IF EXISTS Consulta6;
+
+DELIMITER // 
+
+CREATE PROCEDURE Consulta6(IN nombre VARCHAR(50))
 BEGIN
     SELECT p.nombre, p.apellido1, p.apellido2, p.ciudad, p.direccion, p.telefono, p.fecha_nacimiento, p.sexo
     FROM persona p
     JOIN alumno_se_matricula_asignatura am ON p.id = am.id_alumno
     JOIN asignatura a ON am.id_asignatura = a.id
     JOIN grado g ON a.id_grado = g.id
-    WHERE p.tipo = 'alumno' AND p.sexo = 'M' AND g.nombre = 'Grado en Ingeniería Informática (Plan 2015)';
+    WHERE p.tipo = 'alumno' AND p.sexo = 'M' AND g.nombre = nombre;
 END //
+
+DELIMITER ;
+
+CALL Consulta6 ('Grado en Ingeniería Informática (Plan 2015)');
 ``` 
 * Consulta 7
 ``` sql
